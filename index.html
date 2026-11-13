@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#05070f" />
+    <meta name="description" content="霓虹幸存者：纯前端 Canvas 肉鸽弹幕生存游戏。自动开火、升级三选一、90 秒后迎战深渊观测者。" />
+    <title>霓虹幸存者 · Neon Survivor</title>
+    <link rel="stylesheet" href="./styles/game.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23070b18'/%3E%3Cpath d='M16 5l7 20-7-5-7 5 7-20z' fill='%2322d3ee'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <main id="app">
+      <canvas id="game" aria-label="游戏画面"></canvas>
+
+      <header class="hud" id="hud">
+        <div class="bars">
+          <div class="bar bar--hp" role="progressbar" aria-label="生命值">
+            <div class="bar__fill" id="hpFill"></div>
+            <span class="bar__text" id="hpText">100 / 100</span>
+          </div>
+          <div class="bar bar--xp" role="progressbar" aria-label="经验值">
+            <div class="bar__fill" id="xpFill"></div>
+            <span class="bar__text" id="xpText">Lv.1</span>
+          </div>
+        </div>
+        <div class="stats">
+          <span><b id="statTime">00:00</b> 存活</span>
+          <span><b id="statKills">0</b> 击杀</span>
+          <span><b id="statScore">0</b> 分数</span>
+        </div>
+      </header>
+
+      <div class="controls">
+        <button class="icon-btn" id="muteBtn" type="button" aria-label="静音切换" title="静音 (M)">🔊</button>
+        <button class="icon-btn" id="pauseBtn" type="button" aria-label="暂停" title="暂停 (P)">⏸</button>
+      </div>
+
+      <div class="boss" id="bossBar" hidden>
+        <div class="boss__head">
+          <span class="boss__name">深渊观测者</span>
+          <span class="boss__hp" id="bossHpText">2400</span>
+        </div>
+        <div class="bar bar--boss"><div class="bar__fill" id="bossFill"></div></div>
+      </div>
+
+      <section class="overlay" id="startOverlay">
+        <div class="panel">
+          <p class="eyebrow">NEON SURVIVOR</p>
+          <h1>霓虹幸存者</h1>
+          <p class="lead">深空回廊里活过 90 秒，击穿深渊观测者。<br />武器全自动开火，你只负责走位与选择。</p>
+          <ul class="keys">
+            <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>或</span><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> 移动</li>
+            <li><kbd>Space</kbd> 冲刺（短暂无敌，1.5 秒冷却）</li>
+            <li><kbd>P</kbd> 暂停 · <kbd>M</kbd> 静音 · <kbd>R</kbd> 重开 · <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> 选升级</li>
+            <li>手机：按住屏幕拖动即摇杆，轻点即冲刺</li>
+          </ul>
+          <p class="best" id="startBest">最佳战绩：—</p>
+          <button class="btn btn--primary" id="startBtn" type="button">开始游戏</button>
+        </div>
+      </section>
+
+      <section class="overlay" id="levelOverlay" hidden>
+        <div class="panel panel--wide">
+          <p class="eyebrow">LEVEL UP</p>
+          <h2>选择强化</h2>
+          <p class="lead">按 <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> 也可以直接选取</p>
+          <div class="cards" id="cards"></div>
+        </div>
+      </section>
+
+      <section class="overlay" id="pauseOverlay" hidden>
+        <div class="panel">
+          <h2>已暂停</h2>
+          <p class="lead">按 <kbd>P</kbd> 或 <kbd>Esc</kbd> 继续</p>
+          <button class="btn" id="resumeBtn" type="button">继续游戏</button>
+        </div>
+      </section>
+
+      <section class="overlay" id="overOverlay" hidden>
+        <div class="panel">
+          <p class="eyebrow">GAME OVER</p>
+          <h2>信号中断</h2>
+          <dl class="result" id="overResult"></dl>
+          <button class="btn btn--primary" id="retryBtn" type="button">再来一局</button>
+        </div>
+      </section>
+
+      <section class="overlay" id="victoryOverlay" hidden>
+        <div class="panel">
+          <p class="eyebrow">TARGET DOWN</p>
+          <h2>观测者已清除</h2>
+          <dl class="result" id="victoryResult"></dl>
+          <div class="row">
+            <button class="btn btn--primary" id="endlessBtn" type="button">继续无尽模式</button>
+            <button class="btn" id="victoryRetryBtn" type="button">重新开始</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="toast" id="toast" hidden></div>
+    </main>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "neon-survivor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "霓虹幸存者：纯前端 Canvas 肉鸽弹幕生存游戏，零依赖、无需构建",
+  "keywords": [
+    "game",
+    "canvas",
+    "roguelite",
+    "survivor",
+    "javascript"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node scripts/serve.js",
+    "test": "node --test test/*.test.js",
+    "sim": "node scripts/sim-balance.mjs"
+  }
+}
